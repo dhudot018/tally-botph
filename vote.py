@@ -55,16 +55,19 @@ async def tally_(ctx, *, feature):
                 members.append(member.name)
         
     elif feature[0] == "voice_channel":
-        voice_channel = ctx.author.voice.channel
-        for member in voice_channel.members:
-            members.append(member.name)
+        try:
+            voice_channel = ctx.author.voice.channel
+            for member in voice_channel.members:
+                members.append(member.name)
+        except:
+            await ctx.send("You are not in a Voice channel.")
 
     global tally
     members.sort()
     
     await ctx.message.delete()
     
-    if message_id != None:
+    if message_id != None and len(members) != 0:
         string = "Tallying Latest Poll:\n"
         for emoji in tally:
             if len(tally[emoji]) != 0:
@@ -90,11 +93,12 @@ async def tally_(ctx, *, feature):
             for user in repeater:
                 string += str(user) + "\n"
 
-    else:
+        await ctx.send(string)
+        global ongoing
+        ongoing = False
+    elif message_id == None and len(members) != 0:
         string = "No Available Poll yet!"
-    await ctx.send(string)
-    global ongoing
-    ongoing = False
+    
     
 
 emoji = ["🇦", "🇧", "🇨", "🇩", "🇪", "🇫", "🇬", "🇭", "🇮", "🇯"]
@@ -130,4 +134,4 @@ async def on_message(message):
         for i in range(answers):
             await message.add_reaction(str(emoji[i]))
 
-bot.run('Nzk1Mzc4NTE4Mzc1NzkyNjcx.X_If-A.snTd3H9Xc1xPKfxTxaS1leIjjeE')
+bot.run('Nzk1Mzc4NTE4Mzc1NzkyNjcx.X_If-A.wolkqInTjeAKS8SZDzZ6fNPdHI8')
